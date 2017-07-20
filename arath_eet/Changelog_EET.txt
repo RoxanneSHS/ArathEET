@@ -1,0 +1,9 @@
+V 4.0
+--------------
+- branched from v2.3
+- upgraded to EET
+- Areas Tis with PVRZ
+- script adaptation
+- dialogues fixed
+- EET transition to RoB
+- Weidu updated

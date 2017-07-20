@@ -1,0 +1,9 @@
+IF
+InPartyAllowDead("arath")
+Global("ArathExistsToBJoin","ar4000",0)
+THEN
+  RESPONSE #100
+    SetGlobal("ArathExistsToBJoin","ar4000",1)
+ActionOverride("arath",ChangeAIScript("LK#ar25",OVERRIDE))
+Continue()
+END
