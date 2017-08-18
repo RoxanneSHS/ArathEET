@@ -5,5 +5,5 @@ V 4.0
 - Areas Tis with PVRZ
 - script adaptation
 - dialogues fixed
-- EET transition to RoB
+- EET transition to ToB
 - Weidu updated
