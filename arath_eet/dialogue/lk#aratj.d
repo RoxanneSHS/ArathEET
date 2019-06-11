@@ -1,79 +1,3 @@
-// ----------------------------------------------------------
-// Arath NPC, Joined Dialogue 
-// By K'aeloree
-// ----------------------------------------------------------
-
-// ******************
-// INDEX OF CONTENT *
-// ******************
-
-// ----------------------------------------------------------
-// JOINING SEQUENCE CONTENT & INTERJECTIONS
-// ----------------------------------------------------------
-
-// ----------------------------------------------------------
-// NON-ROMANTIC CONTENT
-// ----------------------------------------------------------
-// -- Underdark
-// -- North Forest
-// Killing the Dragon in Suldanessellar
-// -- Killing Firkraag
-// -- On Being Raised
-// On Being Raised... again
-// -- Caged Animals in Athkatla
-// * Lavok and the Planar Sphere
-// -- Corrupted Forest
-// -- Working for Bodhi
-// -- Working for the Shadow Thieves
-// -- Under Spellhold
-// -- Sahuagin City
-// -- Shadow Druids pt. I
-// -- Shadow Druids pt. II
-// -- The de'Arnise Keep
-// -- Post-Killing Bodhi
-// -- The Bhaalspawn Thing, pt. I
-// -- The Bhaalspawn Thing, pt. II
-// -- The Bhaalspawn Thing, pt. III
-// -- The Bhaalspawn Thing, pt. IV
-
-// ----------------------------------------------------------
-// ROMANTIC CONTENT
-// ----------------------------------------------------------
-// -- Lovetalk 1 - Class-based Flirting (spellcaster, fighter, thief, bard)
-// -- Lovetalk 2 - Further Compliments
-// -- Lovetalk 3 - A "Romantic" Proposal
-// -- Lovetalk 4 - A "Romantic" Dinner
-// -- Lovetalk 5 - The Wonders of Athkatla
-// -- Lovetalk 6 - Bizarre Dreams
-// -- Lovetalk 7 - More compliments!
-// -- Lovetalk 8 - Hottubs and Death
-// -- Lovetalk 9 - The Rash
-// -- Lovetalk 10 - Candlekeep and Siblings
-// -- Lovetalk 11 - Take a fucking break, <CHARNAME>!
-// -- Lovetalk 12 - Smalltalk and Intimations
-// -- Lovetalk 13 - Post-Spellhold, Continued Lack of Sleep
-// -- Lovetalk 14 - Logistics of a Lost Soul
-// -- Lovetalk 15 - A Potion for <CHARNAME>
-// -- Lovetalk 16 - Breaking Point
-// -- Lovetalk 17 - A Drunken Kiss
-// -- Lovetalk 18 - Morning After
-// -- Lovetalk 19 - Revelations
-// -- Lovetalk 20 - The Bracelet
-// -- Sex Scene 2 - The Forest
-// -- Sex Scene 3 - The Massage
-
-// ----------------------------------------------------------
-// INTERJECTIONS
-// ----------------------------------------------------------
-
-// ----------------------------------------------------------
-// BODHINAPPING
-// ----------------------------------------------------------
-
-// ----------------------------------------------------------
-// QUEST
-// ----------------------------------------------------------
-
 BEGIN LK#ARATJ
 
 
@@ -1493,7 +1417,7 @@ IF ~~ a17.6
   ++ @493 +  a17.8
   ++ @494 + a17.9
   ++ @495 + a17.10
-  + ~GlobalLT("chapter","GLOBAL",16)~ + @496 + a17.11
+  + ~GlobalLT("chapter","GLOBAL",%bg2_chapter_4%)~ + @496 + a17.11
 END
 
 IF ~~ a17.7
@@ -2943,12 +2867,12 @@ END
 
 
 // LT8: The fantastical hot-tub and the boringness of death
-IF ~Global("LK#ArathLovetalks","GLOBAL",16) GlobalLT("chapter","GLOBAL",15)~ l8a
+IF ~Global("LK#ArathLovetalks","GLOBAL",16) GlobalLT("chapter","GLOBAL",%bg2_chapter_3%)~ l8a
   SAY @975
   IF ~~ DO ~IncrementGlobal("LK#ArathLovetalks","GLOBAL",1) RealSetGlobalTimer("LK#ArathLovetalkTimer","GLOBAL",3600)~ + l8.1
 END
 
-IF ~Global("LK#ArathLovetalks","GLOBAL",16) GlobalGT("chapter","GLOBAL",14)~ l8b
+IF ~Global("LK#ArathLovetalks","GLOBAL",16) GlobalGT("chapter","GLOBAL",%bg2_chapter_2%)~ l8b
   SAY @976
   IF ~~ DO ~IncrementGlobal("LK#ArathLovetalks","GLOBAL",1) RealSetGlobalTimer("LK#ArathLovetalkTimer","GLOBAL",3600)~ + l8.1
 END
@@ -4984,14 +4908,7 @@ EXTEND_BOTTOM WARSAGE 0
   + ~PartyHasItem("LK#ARBDY")~ + @1662 GOTO 5
 END
 
-// ***********************
-//                       *
-//         QUEST         *
-//                       *
-// ***********************
 
-
-// Arath's quest, chapter 6
 BEGIN LK#ARMES
 
 // Messenger; 10 minutes post-Underdark

@@ -1,9 +1,22 @@
 BACKUP ~arath_eet/backup~
 //AUTHOR ~K'aeloree (kae@spellholdstudios.net)~
 SUPPORT ~Roxanne - https://baldursextendedworld.com/EET-Updates/ or roxanne@baldursextendedworld.com~
-VERSION ~4.0~
+VERSION ~4.1~
 
 AUTO_TRA ~arath_eet/translations/%s~
+
+ALWAYS
+   ACTION_IF GAME_IS ~eet~ BEGIN
+      OUTER_SET bg2_chapter = 12
+    END ELSE BEGIN
+      OUTER_SET bg2_chapter = 0
+    END
+    OUTER_FOR (i=1; i<=10; i=i+1) BEGIN
+      OUTER_SET bg2_chapter = bg2_chapter + 1
+      OUTER_SPRINT name_source ~bg2_chapter_%i%~
+      OUTER_SET EVAL ~%name_source%~ = bg2_chapter
+    END
+END
 
 LANGUAGE ~English~
          ~english~
@@ -11,7 +24,7 @@ LANGUAGE ~English~
 
 
 BEGIN @1
-REQUIRE_PREDICATE GAME_IS ~eet~ @2
+REQUIRE_PREDICATE GAME_IS ~bg2ee eet~ @2
 
 // Copying images and creatures
 COPY ~arath_eet/images~ ~override~
@@ -315,9 +328,9 @@ COPY ~arath_eet/epilogues/lk#arat.2da~ ~override/lk#arat3.2da~
 
 // Compiling dialogue...
 COMPILE ~arath_eet/dialogue/lk#arath.d~
-COMPILE ~arath_eet/dialogue/lk#aratj.d~
-COMPILE ~arath_eet/dialogue/blk#arat.d~
-COMPILE ~arath_eet/dialogue/lk#aratp.d~
+COMPILE EVALUATE_BUFFER ~arath_eet/dialogue/lk#aratj.d~
+COMPILE EVALUATE_BUFFER ~arath_eet/dialogue/blk#arat.d~
+COMPILE EVALUATE_BUFFER ~arath_eet/dialogue/lk#aratp.d~
   USING ~arath_eet/translations/%LANGUAGE%/lk#aratj.tra~
 COMPILE ~arath_eet/dialogue/lk#ar25.d~
 COMPILE ~arath_eet/dialogue/lk#ar25j.d~
@@ -326,7 +339,7 @@ COMPILE ~arath_eet/dialogue/lk#ar25p.d~
 
 
 // Compiling scripts...
-COMPILE ~arath_eet/scripts/lk#arath.baf~
+COMPILE EVALUATE_BUFFER ~arath_eet/scripts/lk#arath.baf~
 COMPILE ~arath_eet/scripts/lk#aratd.baf~
 COMPILE ~arath_eet/scripts/lk#ar25.baf~
 COMPILE ~arath_eet/scripts/lk#ar25d.baf~

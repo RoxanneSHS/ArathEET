@@ -1,5 +1,3 @@
-// Appended to Bodhi's lair to spawn Vamp!Arath
-
 IF
   Global("LK#ArathVampire","GLOBAL",1)
 THEN
