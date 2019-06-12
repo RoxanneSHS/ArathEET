@@ -1,3 +1,6 @@
+// Arath epilogues
+
+// Romanced, didn't ascend
 IF
   Global("StartEndBios","AR6200",1)
   InParty("Arath")
@@ -8,9 +11,9 @@ THEN
   RESPONSE #100
     SetGlobal("LK#ArathBio","GLOBAL",1)
     TextScreen("LK#ARAT1")
-    Continue()
 END
 
+// Romanced, ascended
 IF
   Global("StartEndBios","AR6200",1)
   InParty("Arath")
@@ -21,9 +24,9 @@ THEN
   RESPONSE #100
     SetGlobal("LK#ArathBio","GLOBAL",1)
     TextScreen("LK#ARAT2")
-    Continue()
 END
 
+// Non-romance
 IF
   Global("StartEndBios","AR6200",1)
   InParty("Arath")
@@ -33,7 +36,6 @@ THEN
   RESPONSE #100
     SetGlobal("LK#ArathBio","GLOBAL",1)
     TextScreen("LK#ARAT3")
-    Continue()
 END
 
 

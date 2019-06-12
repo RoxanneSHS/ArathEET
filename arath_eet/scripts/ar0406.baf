@@ -1,12 +1,18 @@
-IF
+// ****************************
+//                            *
+//  Arath creature created    *
+//                            *
+// ****************************
+
+IF 
     Global("LK#ArathExists","AR0406",0)
 THEN
   RESPONSE #100
     CreateCreature("lk#arath",[2490.1727],8)
     SetGlobal("LK#ArathExists","AR0406",1)
-    Continue()
 END
 
+// Kill
 IF
     Global("LK#ArathCCKill","AR0406",1)
 THEN

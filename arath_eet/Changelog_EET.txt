@@ -1,4 +1,4 @@
-V 4.0
+V 4.1
 --------------
 - branched from v2.3
 - upgraded to EET
@@ -8,3 +8,4 @@ V 4.0
 - EET transition to ToB
 - Weidu updated
 - LoB flags added
+- Area scripts improved

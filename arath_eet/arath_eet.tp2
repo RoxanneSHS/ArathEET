@@ -258,32 +258,26 @@ COPY_EXISTING ~noblew1.cre~ ~override/lk#armom.cre~
   WRITE_EVALUATED_ASCII SCRIPT_DEFAULT  ~~ #8
   
 
-// Items
 COPY_EXISTING ~miscbm.itm~ ~override/lk#arbdy.itm~
   SAY NAME1 @58
   SAY NAME2 @58
   SAY DESC @59
 
-
-// Spells
 COPY ~arath_eet/spells~ ~override~
 
-
-// Adding talk condition to Yoshimo just in case...
 COPY_EXISTING ~yoshimox.dlg~ ~override~
-  DECOMPILE_DLG_TO_D
+  DECOMPILE_AND_PATCH BEGIN
     REPLACE_TEXTUALLY ~Enemy()~ ~SetGlobal("LK#ArathYoshBetray","GLOBAL",1) Enemy()~
-  COMPILE_D_TO_DLG
+  END
   BUT_ONLY_IF_IT_CHANGES
 
-// Appends
+
 APPEND ~interdia.2da~ ~Arath BLK#ARAT BLK#AR25~
    UNLESS ~arath~
 
 APPEND ~pdialog.2da~ ~Arath LK#ARATP LK#ARATJ LK#ARATD LK#AR25P LK#AR25J LK#AR25D LK#AR25~
    UNLESS ~arath~
    
-// Areas
 COPY ~arath_eet/areas/lk#ar1ht.bmp~ ~override~
 COPY ~arath_eet/areas/lk#ar1lm.bmp~ ~override~
 COPY ~arath_eet/areas/lk#ar1sr.bmp~ ~override~
@@ -306,7 +300,6 @@ COPY ~arath_eet/areas/lk#ar1_ee.mos~ ~override/lk#ar1.mos~
 COPY ~arath_eet/areas/lk#ar2_ee.mos~ ~override/lk#ar2.mos~
 COPY ~arath_eet/PVRZ~ ~override~
 
-// Audio
 COPY ~arath_eet/audio/lk#blk.mus~ ~music~
 
 COPY_EXISTING ~songlist.2da~ ~override~
@@ -315,7 +308,6 @@ BUT_ONLY
 
 LAF HANDLE_AUDIO END
 
-// Epilogues
 COPY ~arath_eet/epilogues/lk#arat.2da~ ~override/lk#arat1.2da~
   REPLACE ~99999~ @62
 
@@ -326,7 +318,6 @@ COPY ~arath_eet/epilogues/lk#arat.2da~ ~override/lk#arat3.2da~
   REPLACE ~99999~ @64
   
 
-// Compiling dialogue...
 COMPILE ~arath_eet/dialogue/lk#arath.d~
 COMPILE EVALUATE_BUFFER ~arath_eet/dialogue/lk#aratj.d~
 COMPILE EVALUATE_BUFFER ~arath_eet/dialogue/blk#arat.d~
@@ -337,8 +328,6 @@ COMPILE ~arath_eet/dialogue/lk#ar25j.d~
 COMPILE ~arath_eet/dialogue/blk#ar25.d~
 COMPILE ~arath_eet/dialogue/lk#ar25p.d~
 
-
-// Compiling scripts...
 COMPILE EVALUATE_BUFFER ~arath_eet/scripts/lk#arath.baf~
 COMPILE ~arath_eet/scripts/lk#aratd.baf~
 COMPILE ~arath_eet/scripts/lk#ar25.baf~
@@ -377,188 +366,74 @@ EXTEND_BOTTOM ~cut218g.bcs~  ~arath_eet/scripts/lk#arwr2.baf~
 ADD_JOURNAL EXISTING TITLE (#74337) @1644 @1651 @2148 USING ~arath_eet/translations/%LANGUAGE%/lk#aratj.tra~
 ADD_JOURNAL @1675 @1686 @1695 @1761 @1813 @1858 @1889 @1936 @1939 @1995 @1998 @2019 USING ~arath_eet/translations/%LANGUAGE%/lk#aratj.tra~
 
-// Patching slaver sewers
 COPY_EXISTING ~AR0404.are~ ~override/AR0404.are~
-    READ_SHORT ~0x05a~ ~#ofTrigg~
-    READ_SHORT ~0x080~ ~#ofVerti~
-    READ_SHORT ~0x05c~ ~triggOff~
-    READ_SHORT ~0x060~ ~spawnOff~
-    READ_SHORT ~0x068~ ~entraOff~
-    READ_SHORT ~0x070~ ~contaOff~
-    READ_SHORT ~0x078~ ~itemsOff~
-    READ_SHORT ~0x084~ ~ambiaOff~
-    READ_SHORT ~0x0A8~ ~doorsOff~
-    READ_SHORT ~0x07c~ ~vertiOff~
-    READ_SHORT ~0x0B0~ ~animaOff~
-    READ_SHORT ~0x0BC~ ~songsOff~
-    READ_SHORT ~0x0C0~ ~restcOff~
-    READ_SHORT ~0x0C4~ ~automOff~
-    WRITE_SHORT 0x05a (~%#ofTrigg%~ + 1)
-    WRITE_SHORT 0x060 (~%spawnOff%~ + 196)
-    WRITE_SHORT 0x068 (~%entraOff%~ + 196)
-    WRITE_SHORT 0x070 (~%contaOff%~ + 196)
-    WRITE_SHORT 0x078 (~%itemsOff%~ + 196)
-    WRITE_SHORT 0x084 (~%ambiaOff%~ + 196)
-    WRITE_SHORT 0x0A8 (~%doorsOff%~ + 196)
-    WRITE_SHORT 0x07c (~%vertiOff%~ + 196)
-    INSERT_BYTES (~%triggOff%~ + ~%#ofTrigg%~ * 196) 196
-    SET ~newVert~ = 4
-    WRITE_SHORT 0x080 (~%#ofVerti%~ + ~%newVert%~)
-    INSERT_BYTES (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) (~%newVert%~ * 4)
-    WRITE_SHORT 0x0B0 (~%animaOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0BC (~%songsOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C0 (~%restcOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C4 (~%automOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196) ~lk#artr1~  //Name of your trigger
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 32) 0    //where 0 stands for Proximity, 1 for Info Point and 2 for Travel (aka Exit) trigger
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 34) 2467 //Define bounding box:
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 36) 2224
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 38) 2811
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 40) 2476  //smallest X, smallest Y, largest X, largest Y of all new vertices
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 42) ~%newVert%~
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 44) ~%#ofVerti%~
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 52) 0
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 56) ~None~
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 64) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 96) 03    //08 - detectable trap
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 100) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 104) 100    //Trap Detection - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 106) 100    //Trap Removal - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 108) 01    //Is Trapped Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 110) 00    //Trap Already Detected Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 112) 0    //Launcher X coord
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 114) 0    //Launcher Y coord
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 124) ~lk#artr1~  //Associated Script - resref without extention
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) 2467 //Now, write the new vertices. x, y
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 2) 2300
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 4) 2559
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 6) 2224
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 8) 2890
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 10) 2495
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 12) 2829
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 14) 2535
+  LPF ~fj_are_structure~
+    INT_VAR
+    fj_type         = 0    //proximity trigger
+    fj_box_left    = 2467
+    fj_box_top     = 2224
+    fj_box_right   = 2811
+    fj_box_bottom  = 2476
+    fj_loc_x       = 2600
+    fj_loc_y       = 2500
+    fj_vertex_0    = 2467 + (2300 << 16) 
+    fj_vertex_1    = 2559 + (2224 << 16)
+    fj_vertex_2    = 2890 + (2495 << 16)
+    fj_vertex_3    = 2829 + (2535 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_trap_detect      = 100
+    fj_trap_active      = 1
+    fj_trap_status      = 0
+    fj_name             = lk#artr1
+    fj_reg_script   = lk#artr1
+  END
 BUT_ONLY_IF_IT_CHANGES
 
-// Patching slaver stockade
 COPY_EXISTING ~AR0405.are~ ~override/AR0405.are~
-    READ_SHORT ~0x05a~ ~#ofTrigg~
-    READ_SHORT ~0x080~ ~#ofVerti~
-    READ_SHORT ~0x05c~ ~triggOff~
-    READ_SHORT ~0x060~ ~spawnOff~
-    READ_SHORT ~0x068~ ~entraOff~
-    READ_SHORT ~0x070~ ~contaOff~
-    READ_SHORT ~0x078~ ~itemsOff~
-    READ_SHORT ~0x084~ ~ambiaOff~
-    READ_SHORT ~0x0A8~ ~doorsOff~
-    READ_SHORT ~0x07c~ ~vertiOff~
-    READ_SHORT ~0x0B0~ ~animaOff~
-    READ_SHORT ~0x0BC~ ~songsOff~
-    READ_SHORT ~0x0C0~ ~restcOff~
-    READ_SHORT ~0x0C4~ ~automOff~
-    WRITE_SHORT 0x05a (~%#ofTrigg%~ + 1)
-    WRITE_SHORT 0x060 (~%spawnOff%~ + 196)
-    WRITE_SHORT 0x068 (~%entraOff%~ + 196)
-    WRITE_SHORT 0x070 (~%contaOff%~ + 196)
-    WRITE_SHORT 0x078 (~%itemsOff%~ + 196)
-    WRITE_SHORT 0x084 (~%ambiaOff%~ + 196)
-    WRITE_SHORT 0x0A8 (~%doorsOff%~ + 196)
-    WRITE_SHORT 0x07c (~%vertiOff%~ + 196)
-    INSERT_BYTES (~%triggOff%~ + ~%#ofTrigg%~ * 196) 196
-    SET ~newVert~ = 4
-    WRITE_SHORT 0x080 (~%#ofVerti%~ + ~%newVert%~)
-    INSERT_BYTES (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) (~%newVert%~ * 4)
-    WRITE_SHORT 0x0B0 (~%animaOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0BC (~%songsOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C0 (~%restcOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C4 (~%automOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196) ~lk#artr2~  //Name of your trigger
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 32) 0    //where 0 stands for Proximity, 1 for Info Point and 2 for Travel (aka Exit) trigger
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 34) 1312 //Define bounding box:
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 36) 295
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 38) 1751
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 40) 564  //smallest X, smallest Y, largest X, largest Y of all new vertices
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 42) ~%newVert%~
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 44) ~%#ofVerti%~
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 52) 0
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 56) ~None~
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 64) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 96) 03    //08 - detectable trap
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 100) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 104) 100    //Trap Detection - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 106) 100    //Trap Removal - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 108) 01    //Is Trapped Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 110) 00    //Trap Already Detected Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 112) 0    //Launcher X coord
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 114) 0    //Launcher Y coord
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 124) ~lk#artr2~  //Associated Script - resref without extention
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) 1312 //Now, write the new vertices. x, y
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 2) 433
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 4) 1517
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 6) 295
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 8) 1751
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 10) 417
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 12) 1525
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 14) 564
+  LPF ~fj_are_structure~
+    INT_VAR
+    fj_type         = 0    //proximity trigger
+    fj_box_left    = 1312
+    fj_box_top     = 295
+    fj_box_right   = 1751
+    fj_box_bottom  = 564
+    fj_loc_x       = 1500
+    fj_loc_y       = 400
+    fj_vertex_0    = 1312 + (433 << 16) 
+    fj_vertex_1    = 1517 + (295 << 16)
+    fj_vertex_2    = 1751 + (417 << 16)
+    fj_vertex_3    = 1525 + (564 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_trap_detect      = 100
+    fj_trap_active      = 1
+    fj_trap_status      = 0
+    fj_name             = lk#artr2
+    fj_reg_script   = lk#artr2
+  END
 BUT_ONLY_IF_IT_CHANGES
 
-// Patching Waukeen's Promenade
 COPY_EXISTING ~AR0700.are~ ~override/AR0700.are~
-    READ_SHORT ~0x05a~ ~#ofTrigg~
-    READ_SHORT ~0x080~ ~#ofVerti~
-    READ_SHORT ~0x05c~ ~triggOff~
-    READ_SHORT ~0x060~ ~spawnOff~
-    READ_SHORT ~0x068~ ~entraOff~
-    READ_SHORT ~0x070~ ~contaOff~
-    READ_SHORT ~0x078~ ~itemsOff~
-    READ_SHORT ~0x084~ ~ambiaOff~
-    READ_SHORT ~0x0A8~ ~doorsOff~
-    READ_SHORT ~0x07c~ ~vertiOff~
-    READ_SHORT ~0x0B0~ ~animaOff~
-    READ_SHORT ~0x0BC~ ~songsOff~
-    READ_SHORT ~0x0C0~ ~restcOff~
-    READ_SHORT ~0x0C4~ ~automOff~
-    WRITE_SHORT 0x05a (~%#ofTrigg%~ + 1)
-    WRITE_SHORT 0x060 (~%spawnOff%~ + 196)
-    WRITE_SHORT 0x068 (~%entraOff%~ + 196)
-    WRITE_SHORT 0x070 (~%contaOff%~ + 196)
-    WRITE_SHORT 0x078 (~%itemsOff%~ + 196)
-    WRITE_SHORT 0x084 (~%ambiaOff%~ + 196)
-    WRITE_SHORT 0x0A8 (~%doorsOff%~ + 196)
-    WRITE_SHORT 0x07c (~%vertiOff%~ + 196)
-    INSERT_BYTES (~%triggOff%~ + ~%#ofTrigg%~ * 196) 196
-    SET ~newVert~ = 4
-    WRITE_SHORT 0x080 (~%#ofVerti%~ + ~%newVert%~)
-    INSERT_BYTES (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) (~%newVert%~ * 4)
-    WRITE_SHORT 0x0B0 (~%animaOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0BC (~%songsOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C0 (~%restcOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_SHORT 0x0C4 (~%automOff%~ + 196 + (~%newVert%~ * 4))
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196) ~lk#artr3~  //Name of your trigger
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 32) 0    //where 0 stands for Proximity, 1 for Info Point and 2 for Travel (aka Exit) trigger
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 34) 2112 //Define bounding box:
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 36) 1709
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 38) 3317
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 40) 2446  //smallest X, smallest Y, largest X, largest Y of all new vertices
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 42) ~%newVert%~
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 44) ~%#ofVerti%~
-    WRITE_SHORT (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 52) 0
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 56) ~None~
-    WRITE_ASCII (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 64) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 96) 03    //08 - detectable trap
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 100) 0
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 104) 100    //Trap Detection - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 106) 100    //Trap Removal - % of difficulty
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 108) 01    //Is Trapped Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 110) 00    //Trap Already Detected Flag: 00 - No, 01 - Yes
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 112) 0    //Launcher X coord
-    WRITE_LONG (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 114) 0    //Launcher Y coord
-    WRITE_ASCII  (~%triggOff%~ + ~%#ofTrigg%~ * 196 + 124) ~lk#artr3~  //Associated Script - resref without extention
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196) 2112 //Now, write the new vertices. x, y
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 2) 1709
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 4) 3212
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 6) 1709
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 8) 3317
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 10) 2446
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 12) 2112
-    WRITE_SHORT (~%vertiOff%~ + ~%#ofVerti%~ * 4 + 196 + 14) 2446
+  LPF ~fj_are_structure~
+    INT_VAR
+    fj_type         = 0    //proximity trigger
+    fj_box_left    = 2112
+    fj_box_top     = 1709
+    fj_box_right   = 3317
+    fj_box_bottom  = 2446
+    fj_loc_x       = 2800
+    fj_loc_y       = 2000
+    fj_vertex_0    = 2112 + (1709 << 16) 
+    fj_vertex_1    = 3212 + (1709 << 16)
+    fj_vertex_2    = 3317 + (2446 << 16)
+    fj_vertex_3    = 2112 + (2446 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_trap_detect      = 100
+    fj_trap_active      = 1
+    fj_trap_status      = 0
+    fj_name             = lk#artr3
+    fj_reg_script   = lk#artr3
+  END
 BUT_ONLY_IF_IT_CHANGES
