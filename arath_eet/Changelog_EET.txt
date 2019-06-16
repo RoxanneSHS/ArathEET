@@ -9,3 +9,5 @@ V 4.1
 - Weidu updated
 - LoB flags added
 - Area scripts improved
+- many erroneous triggers corrected
+- repaired cre-files
