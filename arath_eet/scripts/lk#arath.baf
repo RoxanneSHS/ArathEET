@@ -243,8 +243,8 @@ THEN
     Dialogue(Player1)
 END
 
-// Plot: Killing Firkraag
 IF
+    AreaCheck("ar1203")
     InParty(Myself)
     See(Player1)
     Dead("firkra02")
@@ -282,8 +282,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Scenery: On Being Raised
 IF
     InParty(Myself)
     See(Player1)
@@ -311,8 +309,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Scenery: On Being Raised... Again
 IF
     InParty(Myself)
     See(Player1)
@@ -340,8 +336,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Scenery: Caged Animals in Athkatla
 IF
     InParty(Myself)
     See(Player1)
@@ -357,12 +351,13 @@ THEN
 END
 
 
-// Plot: Lavok and the Planar Sphere
 IF
+    Global("LavokOutside","GLOBAL",1)
     InParty(Myself)
     See(Player1)
     Dead("lavok02")
     Global("LK#ArathSphere","GLOBAL",0)
+    AreaCheck("ar0411")
 THEN
   RESPONSE #50
     SetGlobal("LK#ArathSphere","GLOBAL",1)
@@ -396,8 +391,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: Corrupted Forest
 IF
     InParty(Myself)
     See(Player1)
@@ -437,13 +430,13 @@ THEN
     Dialogue(Player1)
 END
 
-// Plot: Working for Bodhi
 IF
-    InParty(Myself)
-    See(Player1)
-    Global("WorkingForBodhi","GLOBAL",1)
-    !See("Bodhi")
-    Global("LK#ArathBodhi","GLOBAL",0)
+GlobalLT("chapter","GLOBAL",%bg2_chapter_3%)
+Global("WorkingForBodhi","GLOBAL",1)
+InParty(Myself)
+See(Player1)
+!See("Bodhi")
+Global("LK#ArathBodhi","GLOBAL",0)
 THEN
   RESPONSE #50
     SetGlobal("LK#ArathBodhi","GLOBAL",1)
@@ -464,14 +457,13 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: Working for the Shadow Thieves
 IF
-    InParty(Myself)
-    See(Player1)
-    Global("AranJob","GLOBAL",1)
-    !See("Aran")
-    Global("LK#ArathShadowThieves","GLOBAL",0)
+GlobalLT("chapter","GLOBAL",%bg2_chapter_3%)
+Global("AranJob","GLOBAL",1)
+InParty(Myself)
+See(Player1)
+!See("Aran")
+Global("LK#ArathShadowThieves","GLOBAL",0)
 THEN
   RESPONSE #50
     SetGlobal("LK#ArathShadowThieves","GLOBAL",1)
@@ -492,8 +484,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: PC Loses his/her soul in Spellhold
 IF
     InParty(Myself)
     See(Player1)
@@ -532,8 +522,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: Sahuagin City
 IF
     InParty(Myself)
     See(Player1)
@@ -625,21 +613,15 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: The de'Arnise Keep
 IF
-    InParty(Myself)
-    See(Player1)
-    OR(8)
+Global("LK#ArathKeep","GLOBAL",0)
+    OR(4)
       AreaCheck("AR1300")
       AreaCheck("AR1301")
       AreaCheck("AR1302")
       AreaCheck("AR1303")
-      AreaCheck("AR1304")
-      AreaCheck("AR1305")
-      AreaCheck("AR1306")
-      AreaCheck("AR1307")
-    Global("LK#ArathKeep","GLOBAL",0)
+    InParty(Myself)
+    See(Player1)
 THEN
   RESPONSE #50
     SetGlobal("LK#ArathKeep","GLOBAL",1)
@@ -662,15 +644,11 @@ END
 IF
     InParty(Myself)
     See(Player1)
-    OR(8)
+    OR(4)
       AreaCheck("AR1300")
       AreaCheck("AR1301")
       AreaCheck("AR1302")
       AreaCheck("AR1303")
-      AreaCheck("AR1304")
-      AreaCheck("AR1305")
-      AreaCheck("AR1306")
-      AreaCheck("AR1307")
     !StateCheck(Myself,CD_STATE_NOTVALID)
     !StateCheck(Player1,CD_STATE_NOTVALID)
     CombatCounter(0)
@@ -682,9 +660,8 @@ THEN
     Dialogue(Player1)
 END
 
-
-// Plot: Post-Killing Bodhi
 IF
+    GlobalLT("chapter","GLOBAL",%bg2_chapter_7%)
     InParty(Myself)
     See(Player1)
     Dead("c6bodhi")
@@ -722,8 +699,6 @@ THEN
     Dialogue(Player1)
 END
 
-
-// the Bhaalspawn Cycle
 IF
     InParty(Myself)
     Global("LK#ArathBhaalspawn","GLOBAL",0)
