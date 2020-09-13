@@ -1,7 +1,7 @@
 BACKUP ~arath_eet/backup~
 //AUTHOR ~K'aeloree (kae@spellholdstudios.net)~
 SUPPORT ~Roxanne - https://baldursextendedworld.com/EET-Updates/ or roxanne@baldursextendedworld.com~
-VERSION ~4.2~
+VERSION ~4.3~
 
 AUTO_TRA ~arath_eet/translations/%s~
 
@@ -21,6 +21,9 @@ END
 LANGUAGE ~English~
          ~english~
          ~arath_eet/translations/english/setup.tra~
+LANGUAGE ~Russian~
+         ~russian~
+         ~arath_eet/translations/russian/setup.tra~
 
 
 BEGIN @1

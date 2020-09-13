@@ -11,3 +11,7 @@ V 4.1
 - Area scripts improved
 - many erroneous triggers corrected
 - repaired cre-files
+
+V 4.3
+--------------
+- updated Russian translation
